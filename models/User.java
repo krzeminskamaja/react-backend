@@ -79,4 +79,11 @@ public class User {
         return isActive;
     }
 
+    public void setAllDetails(String login, String firstName, String lastName, Date dateOfBirth, boolean isActive) {
+        setLogin(login);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setDateOfBirth(dateOfBirth);
+        setIsActive(isActive);
+    }
 }

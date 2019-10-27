@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pw.react.backend.reactbackend.models.User;
 import pw.react.backend.reactbackend.repositories.UsersRepo;
-
+import java.util.Map;
 import java.util.List;
 
 @Service
@@ -28,6 +28,13 @@ public class Service {
         return usersRepo.save(user);
     }
 
+    public User findById(int id) {
+        return usersRepo.findById(id);
+    }
+
+    public void delete(User userToDelete) {
+        usersRepo.delete(userToDelete);
+    }
     public boolean exists(User user) {
         List<User> result = usersRepo.findByLogin(user.getLogin());
         return result != null && !result.isEmpty();

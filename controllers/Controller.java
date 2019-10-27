@@ -9,7 +9,8 @@ import pw.react.backend.reactbackend.errors.UserExistsException;
 import pw.react.backend.reactbackend.errors.NotFoundException;
 import pw.react.backend.reactbackend.models.User;
 import pw.react.backend.reactbackend.services.Service;
-
+import java.util.Map;
+import java.util.HashMap;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -47,6 +48,41 @@ public class Controller {
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUser(@PathVariable(value = "Id") int id) {
+        var result = service.findById(id);
+        if (result == null) {
+            throw new UserNotFoundException("Id: " + id);
+        }
+
+        return ResponseEntity.ok(result);
+    }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable(value = "Id") int id) {
+        var userToDelete = service.findById(id);
+        if (userToDelete == null) {
+            throw new UserNotFoundException("Id: " + id);
+        }
+        service.delete(userToDelete);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable(value = "Id") int id, @Valid @RequestBody User user) {
+        User userToUpdate = service.findById(id);
+        if (userToUpdate == null) {
+            throw new UserNotFoundException("Id: " + id);
+        }
+        userToUpdate.setAllDetails(user.getLogin(), user.getFirstName(), user.getLastName(), user.getDateOfBirth(),
+                user.getIsActive());
+        final User updatedUser = service.save(userToUpdate);
+
+        return ResponseEntity.ok(updatedUser);
+    }
+
 
     @ExceptionHandler({UserExistsException.class})
     public ResponseEntity<Error> alreadyExists(UserExistsException ex) {
