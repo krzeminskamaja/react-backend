@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
-
+import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
@@ -79,11 +79,20 @@ public class User {
         return isActive;
     }
 
-    public void setAllDetails(String login, String firstName, String lastName, Date dateOfBirth, boolean isActive) {
+    public User setAllDetails(String login, String firstName, String lastName, boolean isActive) {
+        return setAllDetails(login, firstName, lastName, null, isActive);
+    }
+
+    public User setAllDetails(String login, String firstName, String lastName, Date dateOfBirth, boolean isActive) {
         setLogin(login);
         setFirstName(firstName);
         setLastName(lastName);
         setDateOfBirth(dateOfBirth);
         setIsActive(isActive);
+        return this;
+    }
+    @Override
+    public String toString() {
+        return login + ": " + lastName + ", " + firstName;
     }
 }

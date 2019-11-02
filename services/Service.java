@@ -39,4 +39,7 @@ public class Service {
         List<User> result = usersRepo.findByLogin(user.getLogin());
         return result != null && !result.isEmpty();
     }
+    public void delete(User userToDelete) {
+        usersRepo.delete(userToDelete);
+    }
 }
